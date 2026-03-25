@@ -21,21 +21,64 @@ import { Badge } from "@/components/ui/badge";
 const TaskList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectTask, setSelectTask] = useState("all");
+  const [selectArea, setSelectArea] = useState("all");
+  const SearchFilter = searchQuery ? [{field: 'name', operator: 'contains' as const, value: searchQuery}] : [];
+  const AreaFilter = selectArea == 'all' ? [] : [
+    {field: 'area', operator: 'eq' as const, value: selectArea}
+  ];
+
   const TaskTable = useTable<Task>({
-    columns: useMemo<ColumnDef<Task>[]>(() => [
-      {
-        id: 'code', 
-        accessorKey: 'code',
-        size:100,
-        header: () => <p className="column-title ml-2">Peneee</p>,
-        cell: ({getValue}) => <Badge>{getValue<string>()}</Badge>
-      }
-    ], []),
+    columns: useMemo<ColumnDef<Task>[]>(
+      () => [
+        {
+          id: "code",
+          accessorKey: "code",
+          size: 100,
+          header: () => <p className="column-title ml-2">Codigo</p>,
+          cell: ({ getValue }) => <Badge>{getValue<string>()}</Badge>,
+        },
+        {
+          id: "name",
+          accessorKey: "name",
+          size: 200,
+          header: () => <p className="column-title ml-2">Nombre</p>,
+          cell: ({ getValue }) => (
+            <span className="text-foreground">{getValue<String>()}</span>
+          ),
+          filterFn: "includesString",
+        },
+        {
+          id: "area",
+          accessorKey: "area",
+          size: 150,
+          header: () => <p className="column-title">Area</p>,
+          cell: ({ getValue }) => (
+            <Badge variant="secondary">{getValue<string>()}</Badge>
+          ),
+        },
+        {
+          id: "description",
+          accessorKey: "description",
+          size: 300,
+          header: () => <p className="column-title">Descripcion</p>,
+          cell: ({ getValue }) => (
+             <span className="truncate line-clamp-2">{getValue<String>()}</span>
+          ),
+        },
+      ],
+      [],
+    ),
     refineCoreProps: {
       resource: "tasks",
       pagination: { pageSize: 10, mode: "server" },
-      filters: {},
-      sorters: {},
+      filters: {
+        permanent: [... AreaFilter, ...SearchFilter]
+      },
+      sorters: {
+        initial: [
+          {field: 'id', order: 'desc'}
+        ]
+      },
     },
   });
 
@@ -45,7 +88,7 @@ const TaskList = () => {
       <div className="intro-row">
         <p>Acceso rapido para las herramintas de tareas y manejos!</p>
         <div className="actions-row">
-          <div className="search-task">
+          <div className="search-tasks">
             <Search className="search-icon" />
             <Input
               type="text"
