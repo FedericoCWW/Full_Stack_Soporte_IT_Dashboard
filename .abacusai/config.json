@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npx drizzle-kit push *)",
-      "Bash(npx tsx src/demo-crud.ts *)"
+      "Bash(npx tsx src/demo-crud.ts *)",
+      "Bash(dir *)"
     ]
   }
 }
