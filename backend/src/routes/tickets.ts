@@ -9,8 +9,8 @@ router.get("/", async (req, res) => {
   try {
     const { search, area, page = 1, limit = 10 } = req.query;
 
-    const current_page = Math.max(1, +page);
-    const limit_per_page = Math.max(1, +limit);
+    const current_page = Math.max(1, parseInt(String(page), 10) || 1);
+    const limit_per_page = Math.min(Math.max(1, parseInt(String(limit), 10) || 10), 100);
 
     const offset = (current_page - 1) * limit_per_page;
     const filterConditions = [];
@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
       );
     }
     if (area) {
+      const areaPatter = `%${String(area).replace(/[%_]/g, '\\$&')}%`;
       filterConditions.push(eq(tickets.area_id, Number(area)));
     }
     const Clausewhere =
