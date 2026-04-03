@@ -4,8 +4,8 @@ import { integer, pgTable, timestamp, varchar, pgEnum } from "drizzle-orm/pg-cor
 export const estadoTicketEnum = pgEnum('estado_ticket', ['Abierto', 'En proceso', 'Cerrado', 'Pendiente tecnologia', 'Pendiente de obra', 'Pendiente usuario']);
 
 const timestamps = {
-    CreatedAt: timestamp('created_at').notNull().defaultNow(),
-    UpdatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()).notNull(),
+    CreatedAt: timestamp('created_at').defaultNow().notNull(),
+    UpdatedAt: timestamp('updated_at').defaultNow().notNull().$onUpdate(() => new Date()).notNull(),
 }
 
 export const areas = pgTable('area',{
