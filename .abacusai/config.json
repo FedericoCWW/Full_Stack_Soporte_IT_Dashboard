@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npx drizzle-kit push *)",
       "Bash(npx tsx src/demo-crud.ts *)",
-      "Bash(dir *)"
+      "Bash(dir *)",
+      "Bash(Bash(findstr *))",
+      "Bash(Bash(head *))",
+      "Bash(findstr *)"
     ]
   }
 }

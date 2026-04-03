@@ -9,23 +9,25 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select.tsx";
-import React, { useMemo, useState } from "react";
-import { LISTA_OPCIONES } from "../../const/const";
+import { useMemo, useState } from "react";
 import { CreateButton } from "@/components/refine-ui/buttons/create";
 import { DataTable } from "@/components/refine-ui/data-table/data-table";
 import { useTable } from "@refinedev/react-table";
-import { Task } from "@/types";
+import { useList } from "@refinedev/core";
+import { Area, Task } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 
 const TaskList = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectTask, setSelectTask] = useState("all");
   const [selectArea, setSelectArea] = useState("all");
-  const SearchFilter = searchQuery ? [{field: 'name', operator: 'contains' as const, value: searchQuery}] : [];
+  const SearchFilter = searchQuery ? [{field: 'search', operator: 'contains' as const, value: searchQuery}] : [];
   const AreaFilter = selectArea == 'all' ? [] : [
     {field: 'area', operator: 'eq' as const, value: selectArea}
   ];
+
+  const { result: areasResult } = useList<Area>({ resource: "areas" });
+  const areas = areasResult?.data ?? [];
 
   const TaskTable = useTable<Task>({
     columns: useMemo<ColumnDef<Task>[]>(
@@ -43,13 +45,13 @@ const TaskList = () => {
           size: 200,
           header: () => <p className="column-title ml-2">Nombre</p>,
           cell: ({ getValue }) => (
-            <span className="text-foreground">{getValue<String>()}</span>
+            <span className="text-foreground">{getValue<string>()}</span>
           ),
           filterFn: "includesString",
         },
         {
           id: "area",
-          accessorKey: "area",
+          accessorKey: "area.name",
           size: 150,
           header: () => <p className="column-title">Area</p>,
           cell: ({ getValue }) => (
@@ -62,7 +64,7 @@ const TaskList = () => {
           size: 300,
           header: () => <p className="column-title">Descripcion</p>,
           cell: ({ getValue }) => (
-             <span className="truncate line-clamp-2">{getValue<String>()}</span>
+             <span className="truncate line-clamp-2">{getValue<string>()}</span>
           ),
         },
       ],
@@ -99,15 +101,14 @@ const TaskList = () => {
             />
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            <Select value={selectTask} onValueChange={setSelectTask}>
-              {/* Aca irian las tareas de las areas a mostrar */}
+            <Select value={selectArea} onValueChange={setSelectArea}>
               <SelectTrigger>
-                <SelectValue placeholder="Filtrar por tarea" />
+                <SelectValue placeholder="Filtrar por area" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todas las areas</SelectItem>
-                {LISTA_OPCIONES.map((l) => (
-                  <SelectItem value={l.value}>{l.label}</SelectItem>
+                {areas.map((area) => (
+                  <SelectItem key={area.id} value={String(area.id)}>{area.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

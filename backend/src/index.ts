@@ -1,5 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import router from './routes/tickets'
+import tasksRouter from './routes/tasks'
+import areasRouter from './routes/areas'
 import cors from 'cors'
 
 const app = express();
@@ -13,6 +15,8 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/tickets', router)
+app.use('/api/tasks', tasksRouter)
+app.use('/api/areas', areasRouter)
 
 app.get("/", (req: Request, res: Response) => {
   res.send({ message: "Hello World" });
