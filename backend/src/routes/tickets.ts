@@ -24,8 +24,8 @@ router.get("/", async (req, res) => {
       );
     }
     if (area) {
-      const areaPatter = `%${String(area).replace(/[%_]/g, '\\$&')}%`;
-      filterConditions.push(eq(tickets.area_id, Number(area)));
+      const areaPattern = `%${String(area).replace(/[%_]/g, '\\$&')}%`;
+      filterConditions.push(ilike(areas.nombre, areaPattern));
     }
     const Clausewhere =
       filterConditions.length > 0 ? and(...filterConditions) : undefined;
