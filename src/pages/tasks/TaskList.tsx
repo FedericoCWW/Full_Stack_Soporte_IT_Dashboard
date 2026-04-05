@@ -95,7 +95,7 @@ const TaskList = () => {
             <Input
               type="text"
               placeholder="Buscar por nombre"
-              className="search-input"
+              className="search-input pl-8"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
