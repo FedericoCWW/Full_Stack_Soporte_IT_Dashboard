@@ -77,9 +77,9 @@ const Create = () => {
 
       <Separator />
 
-      <div className="my-8 flex justify-center">
-        <Card className="w-full max-w-3xl shadow-lg rounded-lg border border-gray-200 bg-white">
-          <CardHeader className="bg-gray-100 rounded-t-lg px-6 py-4 border-b">
+      <div className="my-4 flex justify-center">
+        <Card className="w-full max-w-3xl gap-0 overflow-hidden rounded-lg border border-gray-200 bg-white p-0 shadow-lg">
+          <CardHeader className="rounded-none border-b bg-gray-100 px-6 py-6">
             <CardTitle className="text-xl font-semibold text-gray-800">
               Información de la clase
             </CardTitle>
