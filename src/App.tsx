@@ -14,7 +14,9 @@ import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 import Dashboard from "./pages/Dashboard";
 import TaskList from "./pages/tasks/TaskList";
 import TaskCreate from "./pages/tasks/TaskCreate";
-import { Home, ClipboardList, List } from "lucide-react";
+import ClassesList from "./pages/classes/list";
+import ClassesCreate from "./pages/classes/create";
+import { Home, ClipboardList, GraduationCap } from "lucide-react";
 import { Layout } from "./components/refine-ui/layout/layout";
 import { dataProvider } from "./providers/data";
 
@@ -46,6 +48,12 @@ function App() {
                   create: "/tasks/create",
                   meta: { label: "Tasks", icon: <ClipboardList /> },
                 },
+                {
+                  name: "classes",
+                  list: "/classes",
+                  create: "/classes/create",
+                  meta: { label: "Classes", icon: <GraduationCap /> },
+                },
               ]}
             >
               <Routes>
@@ -60,6 +68,10 @@ function App() {
                   <Route path="tasks">
                     <Route index element={<TaskList />}/>
                     <Route path="create" element={<TaskCreate />}/>
+                  </Route>
+                  <Route path="classes">
+                    <Route index element={<ClassesList />}/>
+                    <Route path="create" element={<ClassesCreate />}/>
                   </Route>
                 </Route>
               </Routes>
