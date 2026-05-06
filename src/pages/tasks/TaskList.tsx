@@ -29,7 +29,7 @@ const TaskList = () => {
   const { result: areasResult } = useList<Area>({ resource: "areas" });
   const areas = areasResult?.data ?? [];
 
-  const TaskTable = useTable<Task>({
+  const taskTable = useTable<Task>({
     columns: useMemo<ColumnDef<Task>[]>(
       () => [
         {
@@ -51,7 +51,7 @@ const TaskList = () => {
         },
         {
           id: "area",
-          accessorKey: "area.name",
+          accessorFn: (row) => row.area?.name ?? "",
           size: 150,
           header: () => <p className="column-title">Area</p>,
           cell: ({ getValue }) => (
@@ -84,9 +84,19 @@ const TaskList = () => {
     },
   });
 
+  const { tableQuery } = taskTable.refineCore;
+
   return (
     <ListView>
       <Breadcrumb />
+      {tableQuery.isError ? (
+        <p className="text-destructive text-sm mb-2" role="alert">
+          No se pudieron cargar las tareas. Comprueba que el backend esté en ejecución
+          y que la URL en{" "}
+          <code className="rounded bg-muted px-1 py-0.5">VITE_BACKEND_BASE_URL</code>{" "}
+          sea correcta.
+        </p>
+      ) : null}
       <div className="intro-row">
         <p>Acceso rapido para las herramintas de tareas y manejos!</p>
         <div className="actions-row">
@@ -116,7 +126,7 @@ const TaskList = () => {
           </div>
         </div>
       </div>
-      <DataTable table={TaskTable} />
+      <DataTable table={taskTable} />
     </ListView>
   );
 };
