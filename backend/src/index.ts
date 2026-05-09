@@ -6,11 +6,14 @@ import cors from 'cors'
 
 const app = express();
 const port = 3000;
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}))
+app.use(
+  cors({
+    /** Reflect browser Origin in dev when FRONTEND_URL is unset */
+    origin: process.env.FRONTEND_URL ?? true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
